@@ -3,9 +3,16 @@ using EstateAgency.Domain.Enums;
 
 namespace EstateAgency.Test;
 
+/// <summary>
+/// Тестовая фикстура с инмемори данными для юнит‑тестов: контрагенты, объекты недвижимости и заявки.
+/// Используется через IClassFixture для единообразных входных данных во всех тестах.
+/// </summary>
 public class TestDataFixture
 {
-    public List<Counterparty> Clients =>
+    /// <summary>
+    /// Коллекция контрагентов с базовыми реквизитами, используемая в заявках.
+    /// </summary>
+    public List<Counterparty> Counterparties =>
     [
         new() 
         { 
@@ -79,6 +86,10 @@ public class TestDataFixture
         }
     ];
 
+    /// <summary>
+    /// Коллекция объектов недвижимости с типом, назначением и характеристиками,
+    /// на которые ссылаются заявки.
+    /// </summary>
     public List<RealEstate> EstateObjects =>
     [
         new() 
@@ -223,13 +234,17 @@ public class TestDataFixture
         }
     ];
 
+    /// <summary>
+    /// Коллекция заявок, связывающих клиентов с объектами; содержит тип операции, сумму и дату.
+    /// Используется в тестах для выборок по периодам и аналитических группировок.
+    /// </summary>
     public List<Application> Requests =>
     [
         new() 
         {
             Id = 1,  
             CounterpartyId = 1,  
-            Counterparty = Clients[0],  
+            Counterparty = Counterparties[0],  
             RealEstateId = 1,  
             RealEstate = EstateObjects[0],  
             Type = ApplicationType.Sale,     
@@ -240,7 +255,7 @@ public class TestDataFixture
         {
             Id = 2,  
             CounterpartyId = 2,  
-            Counterparty = Clients[1],  
+            Counterparty = Counterparties[1],  
             RealEstateId = 2, 
             RealEstate = EstateObjects[1],  
             Type = ApplicationType.Sale,     
@@ -251,7 +266,7 @@ public class TestDataFixture
         {
             Id = 3,  
             CounterpartyId = 3,  
-            Counterparty = Clients[2],  
+            Counterparty = Counterparties[2],  
             RealEstateId = 3,  
             RealEstate = EstateObjects[2],  
             Type = ApplicationType.Purchase, 
@@ -262,7 +277,7 @@ public class TestDataFixture
         {
             Id = 4,  
             CounterpartyId = 4,  
-            Counterparty = Clients[3],  
+            Counterparty = Counterparties[3],  
             RealEstateId = 4, 
             RealEstate = EstateObjects[3],  
             Type = ApplicationType.Purchase, 
@@ -273,7 +288,7 @@ public class TestDataFixture
         { 
             Id = 5,  
             CounterpartyId = 5,  
-            Counterparty = Clients[4],  
+            Counterparty = Counterparties[4],  
             RealEstateId = 5,  
             RealEstate = EstateObjects[4],  
             Type = ApplicationType.Sale,     
@@ -284,7 +299,7 @@ public class TestDataFixture
         {
             Id = 6,  
             CounterpartyId = 6,  
-            Counterparty = Clients[5],  
+            Counterparty = Counterparties[5],  
             RealEstateId = 6,  
             RealEstate = EstateObjects[5],  
             Type = ApplicationType.Sale,     
@@ -295,7 +310,7 @@ public class TestDataFixture
         { 
             Id = 7,  
             CounterpartyId = 7,
-            Counterparty = Clients[6],  
+            Counterparty = Counterparties[6],  
             RealEstateId = 7,  
             RealEstate = EstateObjects[6],  
             Type = ApplicationType.Purchase, 
@@ -306,7 +321,7 @@ public class TestDataFixture
         { 
             Id = 8,  
             CounterpartyId = 8,  
-            Counterparty = Clients[7],  
+            Counterparty = Counterparties[7],  
             RealEstateId = 8,  
             RealEstate = EstateObjects[7],  
             Type = ApplicationType.Purchase, 
@@ -317,7 +332,7 @@ public class TestDataFixture
         { 
             Id = 9,  
             CounterpartyId = 9,  
-            Counterparty = Clients[8],  
+            Counterparty = Counterparties[8],  
             RealEstateId = 9,  
             RealEstate = EstateObjects[8],  
             Type = ApplicationType.Sale,     
@@ -328,7 +343,7 @@ public class TestDataFixture
         { 
             Id = 10, 
             CounterpartyId = 10, 
-            Counterparty = Clients[9],  
+            Counterparty = Counterparties[9],  
             RealEstateId = 10, 
             RealEstate = EstateObjects[9],  
             Type = ApplicationType.Purchase, 
@@ -339,7 +354,7 @@ public class TestDataFixture
         { 
             Id = 11, 
             CounterpartyId = 1,  
-            Counterparty = Clients[0],  
+            Counterparty = Counterparties[0],  
             RealEstateId = 7,  
             RealEstate = EstateObjects[6],  
             Type = ApplicationType.Purchase, 
@@ -350,7 +365,7 @@ public class TestDataFixture
         { 
             Id = 12, 
             CounterpartyId = 2,  
-            Counterparty = Clients[1],  
+            Counterparty = Counterparties[1],  
             RealEstateId = 1,  
             RealEstate = EstateObjects[0],  
             Type = ApplicationType.Purchase, 
@@ -361,7 +376,7 @@ public class TestDataFixture
         { 
             Id = 13, 
             CounterpartyId = 3,  
-            Counterparty = Clients[2],  
+            Counterparty = Counterparties[2],  
             RealEstateId = 5,  
             RealEstate = EstateObjects[4],  
             Type = ApplicationType.Sale,     
@@ -372,7 +387,7 @@ public class TestDataFixture
         { 
             Id = 14, 
             CounterpartyId = 4,  
-            Counterparty = Clients[3],  
+            Counterparty = Counterparties[3],  
             RealEstateId = 2,  
             RealEstate = EstateObjects[1],  
             Type = ApplicationType.Sale,     
@@ -383,7 +398,7 @@ public class TestDataFixture
         { 
             Id = 15, 
             CounterpartyId = 5,  
-            Counterparty = Clients[4],  
+            Counterparty = Counterparties[4],  
             RealEstateId = 9,  
             RealEstate = EstateObjects[8],  
             Type = ApplicationType.Purchase, 
