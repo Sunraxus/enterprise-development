@@ -20,17 +20,17 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
 
         var expected = new[]
         {
-        "Орлов Артём Александров",
-        "Петров Пётр Петрович",
-        "Попова Елена Викторовна",
-        "Соколов Дмитрий Андреевич"
+            "Орлов Артём Александров",
+            "Петров Пётр Петрович",
+            "Попова Елена Викторовна",
+            "Соколов Дмитрий Андреевич"
         };
 
         var sellers = fixture.Requests
             .Where(a => a.Type == ApplicationType.Sale && a.Date >= from && a.Date <= to)
             .Select(a => a.Counterparty.FullName)
             .Distinct()
-            .OrderBy(n => n)
+            .Order()
             .ToList();
 
         Assert.Equal(expected, sellers);
@@ -45,21 +45,21 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
     {
         var purchaseExpected = new[]
         {
-        new { FullName = "Волкова Екатерина Мих.", Count = 1 },
-        new { FullName = "Иванов Иван Иванович", Count = 1 },
-        new { FullName = "Кузнецов Алексей Иванов", Count = 1 },
-        new { FullName = "Лебедева Мария Алексеевна", Count = 1 },
-        new { FullName = "Морозов Николай Петрович", Count = 1 }
-    }.ToList();
+            new { FullName = "Волкова Екатерина Мих.", Count = 1 },
+            new { FullName = "Иванов Иван Иванович", Count = 1 },
+            new { FullName = "Кузнецов Алексей Иванов", Count = 1 },
+            new { FullName = "Лебедева Мария Алексеевна", Count = 1 },
+            new { FullName = "Морозов Николай Петрович", Count = 1 }
+        }.ToList();
 
         var saleExpected = new[]
         {
-        new { FullName = "Иванов Иван Иванович", Count = 1 },
-        new { FullName = "Кузнецов Алексей Иванов", Count = 1 },
-        new { FullName = "Орлов Артём Александров", Count = 1 },
-        new { FullName = "Петров Пётр Петрович", Count = 1 },
-        new { FullName = "Попова Елена Викторовна", Count = 1 }
-    }.ToList();
+            new { FullName = "Иванов Иван Иванович", Count = 1 },
+            new { FullName = "Кузнецов Алексей Иванов", Count = 1 },
+            new { FullName = "Орлов Артём Александров", Count = 1 },
+            new { FullName = "Петров Пётр Петрович", Count = 1 },
+            new { FullName = "Попова Елена Викторовна", Count = 1 }
+        }.ToList();
 
         var purchaseTop = fixture.Requests
             .Where(a => a.Type == ApplicationType.Purchase)
@@ -91,22 +91,17 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
     public void GetApplicationCountByEstateType()
     {
         var expected = new[]
-        {
-        new { Type = TypeRealEstate.Apartment, Count = 6 },
-        new { Type = TypeRealEstate.Office, Count = 4 },
-        new { Type = TypeRealEstate.House, Count = 2 },
-        new { Type = TypeRealEstate.Commercial, Count = 2 },
-        new { Type = TypeRealEstate.Warehouse, Count = 1 }
-    }
-        .OrderByDescending(x => x.Count)
-        .ThenBy(x => x.Type)
-        .ToList();
+    {
+            new { Type = TypeRealEstate.Apartment,  Count = 6 },
+            new { Type = TypeRealEstate.House,      Count = 2 },
+            new { Type = TypeRealEstate.Commercial, Count = 2 },
+            new { Type = TypeRealEstate.Office,     Count = 4 },
+            new { Type = TypeRealEstate.Warehouse,  Count = 1 }
+        }.ToList();
 
         var counts = fixture.Requests
             .GroupBy(a => a.RealEstate.Type)
             .Select(g => new { Type = g.Key, Count = g.Count() })
-            .OrderByDescending(x => x.Count)
-            .ThenBy(x => x.Type)
             .ToList();
 
         Assert.Equal(expected, counts);
@@ -123,10 +118,13 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             "Лебедева Мария Алексеевна" 
         };
 
+        var minAmount = fixture.Requests.Min(a => a.Amount);
+
         var customers = fixture.Requests
-            .OrderBy(a => a.Amount)
-            .Take(1)
+            .Where(a => a.Amount == minAmount)
             .Select(a => a.Counterparty.FullName)
+            .Distinct()
+            .Order()
             .ToList();
 
         Assert.Equal(expected, customers);
@@ -146,11 +144,13 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             "Петров Пётр Петрович"
         };
 
+        const TypeRealEstate targetType = TypeRealEstate.Apartment;
+
         var customers = fixture.Requests
-            .Where(a => a.Type == ApplicationType.Purchase && a.RealEstate.Type == TypeRealEstate.Apartment)
+            .Where(a => a.Type == ApplicationType.Purchase && a.RealEstate.Type == targetType)
             .Select(a => a.Counterparty.FullName)
             .Distinct()
-            .OrderBy(n => n)
+            .Order()
             .ToList();
 
         Assert.Equal(expected, customers);
