@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.Domain", "EstateAgency.Domain\EstateAgency.Domain.csproj", "{3C66170A-DDD9-4B8A-AA03-C235E2477446}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.Test", "EstateAgency.Test\EstateAgency.Test.csproj", "{CE1379BC-145D-40C9-B78F-CAF31BC449A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.Infrastructure", "EstateAgency.Infrastructure\EstateAgency.Infrastructure.csproj", "{CC395600-8F8A-49DD-B3E3-FDBF451A7B7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CE1379BC-145D-40C9-B78F-CAF31BC449A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE1379BC-145D-40C9-B78F-CAF31BC449A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE1379BC-145D-40C9-B78F-CAF31BC449A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC395600-8F8A-49DD-B3E3-FDBF451A7B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC395600-8F8A-49DD-B3E3-FDBF451A7B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC395600-8F8A-49DD-B3E3-FDBF451A7B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC395600-8F8A-49DD-B3E3-FDBF451A7B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
