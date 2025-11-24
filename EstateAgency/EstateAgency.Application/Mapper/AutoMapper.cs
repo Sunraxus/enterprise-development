@@ -9,14 +9,14 @@ namespace EstateAgency.Application.Mapper;
 /// Описывает правила преобразования между сущностями домена и DTO,
 /// обеспечивая быстрый и безопасный маппинг объектов в приложении.
 /// </summary>
-public class AutoMapper : Profile
+public class AppMapper : Profile
 {
     /// <summary>
-    /// Конструктор класса AutoMapper.
+    /// Конструктор класса AppMapper.
     /// Инициализирует все сопоставления между DTO и доменными сущностями 
     /// для контрагентов, недвижимости и заявок, включая двусторонний маппинг.
     /// </summary>
-    public AutoMapper()
+    public AppMapper()
     {
         CreateMap<Counterparty, CounterpartyReadDto>().ReverseMap();
         CreateMap<CounterpartyCreateDto, Counterparty>().ReverseMap();

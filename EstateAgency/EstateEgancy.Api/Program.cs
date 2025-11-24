@@ -1,15 +1,43 @@
+using EstateAgency.Application.Mapper;
+using EstateAgency.Domain.Entities;
+using EstateAgency.Domain.Interface;
+using EstateAgency.Infrastructure.Persistence;
+using EstateAgency.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AppMapper>());
+
+builder.Services.AddScoped<IRepository<Counterparty>>(provider =>
+    new Repository<Counterparty>(provider.GetRequiredService<AppDbContext>()));
+builder.Services.AddScoped<IRepository<RealEstate>>(provider =>
+    new Repository<RealEstate>(provider.GetRequiredService<AppDbContext>()));
+builder.Services.AddScoped<IRepository<Application>>(provider =>
+    new Repository<Application>(provider.GetRequiredService<AppDbContext>()));
+ 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml");
+    foreach (var xmlFile in xmlFiles)
+        c.IncludeXmlComments(xmlFile);
+});
 
 var app = builder.Build();
+ 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+    await DbSeeder.SeedAsync(db);
+}
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +45,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
