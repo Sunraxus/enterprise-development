@@ -83,7 +83,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(r => r.CadastralNumber)
                 .HasColumnName("cadastral_number")
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(19);
 
             entity.Property(r => r.Address)
                 .HasColumnName("address")
