@@ -4,9 +4,10 @@ using EstateAgency.Domain.Interface;
 using EstateAgency.Infrastructure.Persistence;
 using EstateAgency.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -30,6 +31,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
  
 using (var scope = app.Services.CreateScope())
 {

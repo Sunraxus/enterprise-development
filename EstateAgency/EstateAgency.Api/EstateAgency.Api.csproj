@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EstateAgency.Application\EstateAgency.Application.csproj" />
     <ProjectReference Include="..\EstateAgency.Infrastructure\EstateAgency.Infrastructure.csproj" />
+    <ProjectReference Include="..\EstateAgency.ServiceDefaults\EstateAgency.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

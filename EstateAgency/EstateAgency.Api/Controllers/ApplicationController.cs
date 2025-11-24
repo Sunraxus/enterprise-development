@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EstateAgency.Api.Controllers;
 
 /// <summary>
-/// Контроллер для управления сущностями заявок (Application) через REST API.
-/// Поддерживает операции создания, получения, обновления и удаления заявок,
-/// а также проверку целостности по связанным объектам недвижимости и контрагентам.
+/// Контроллер для операций CRUD над заявками, включая проверки наличия связанных объектов.
+/// Навигация и сохранение выполняется как через FK, так и через объект.
 /// </summary>
 [ApiController]
 [Route("api/applications")]
@@ -18,25 +17,23 @@ public class ApplicationController(
     IRepository<EstateAgency.Domain.Entities.Application> repository,
     IRepository<RealEstate> realEstateRepository,
     IRepository<Counterparty> counterpartyRepository,
-    IMapper mapper) : ControllerBase
+    IMapper mapper
+) : ControllerBase
 {
     /// <summary>
     /// Возвращает список всех заявок из базы данных.
     /// </summary>
-    /// <returns>HTTP 200 со списком заявок или пустым списком</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ApplicationReadDto>>> GetAll()
     {
         var items = await repository.GetAllAsync();
         var dto = mapper.Map<IEnumerable<ApplicationReadDto>>(items);
-        return Ok(dto); 
+        return Ok(dto);
     }
 
     /// <summary>
     /// Возвращает заявку по её идентификатору.
     /// </summary>
-    /// <param name="id">Идентификатор заявки</param>
-    /// <returns>HTTP 200 с DTO заявки или 404, если не найдена</returns>
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ApplicationReadDto>> GetById(int id)
     {
@@ -47,27 +44,31 @@ public class ApplicationController(
     }
 
     /// <summary>
-    /// Создаёт новую заявку на основе данных из DTO.
-    /// Проверяет наличие связанных сущностей и корректность типа.
+    /// Создаёт новую заявку, проверяя наличие FK и присоединённых сущностей.
     /// </summary>
-    /// <param name="dto">Данные для создания заявки</param>
-    /// <returns>HTTP 201 с созданной заявкой или код ошибки</returns>
     [HttpPost]
     public async Task<ActionResult<ApplicationReadDto>> Create([FromBody] ApplicationCreateDto dto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var realEstateExists = await realEstateRepository.GetByIdAsync(dto.RealEstateId) != null;
-        var counterpartyExists = await counterpartyRepository.GetByIdAsync(dto.CounterpartyId) != null;
-        if (!realEstateExists || !counterpartyExists)
+        // Проверяем наличие объекта недвижимости и контрагента по ID
+        var realEstate = await realEstateRepository.GetByIdAsync(dto.RealEstateId);
+        var counterparty = await counterpartyRepository.GetByIdAsync(dto.CounterpartyId);
+
+        if (realEstate is null || counterparty is null)
             return Conflict("RealEstate or Counterparty not found.");
 
         if (!Enum.TryParse<ApplicationType>(dto.Type, true, out var typeEnum))
             return BadRequest("Invalid Application type.");
 
+        // Маппинг DTO → Entity и привязка навигационных свойств вручную (FK + объект)
         var model = mapper.Map<EstateAgency.Domain.Entities.Application>(dto);
         model.Type = typeEnum;
+        model.RealEstate = realEstate;
+        model.Counterparty = counterparty;
+        model.RealEstateId = realEstate.Id;
+        model.CounterpartyId = counterparty.Id;
 
         var created = await repository.AddAsync(model);
         var resultDto = mapper.Map<ApplicationReadDto>(created);
@@ -76,11 +77,8 @@ public class ApplicationController(
     }
 
     /// <summary>
-    /// Обновляет существующую заявку по идентификатору.
+    /// Обновляет заявку по идентификатору, корректно синхронизируя FK и навигационные свойства.
     /// </summary>
-    /// <param name="id">Идентификатор заявки</param>
-    /// <param name="dto">Новые значения полей заявки</param>
-    /// <returns>HTTP 204 при успехе или код ошибки</returns>
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] ApplicationCreateDto dto)
     {
@@ -91,16 +89,22 @@ public class ApplicationController(
         if (model is null)
             return NotFound("Application to update not found.");
 
-        var realEstateExists = await realEstateRepository.GetByIdAsync(dto.RealEstateId) != null;
-        var counterpartyExists = await counterpartyRepository.GetByIdAsync(dto.CounterpartyId) != null;
-        if (!realEstateExists || !counterpartyExists)
+        var realEstate = await realEstateRepository.GetByIdAsync(dto.RealEstateId);
+        var counterparty = await counterpartyRepository.GetByIdAsync(dto.CounterpartyId);
+
+        if (realEstate is null || counterparty is null)
             return Conflict("RealEstate or Counterparty not found.");
 
         if (!Enum.TryParse<ApplicationType>(dto.Type, true, out var typeEnum))
             return BadRequest("Invalid Application type.");
 
+        // Обновление всех свойств + синхронизация FK и навигации
         mapper.Map(dto, model);
         model.Type = typeEnum;
+        model.RealEstate = realEstate;
+        model.Counterparty = counterparty;
+        model.RealEstateId = realEstate.Id;
+        model.CounterpartyId = counterparty.Id;
 
         await repository.UpdateAsync(model);
         return NoContent();
@@ -109,13 +113,12 @@ public class ApplicationController(
     /// <summary>
     /// Удаляет заявку по идентификатору.
     /// </summary>
-    /// <param name="id">Идентификатор заявки</param>
-    /// <returns>HTTP 204 при успехе, 404 или 400 при ошибке</returns>
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var model = await repository.GetByIdAsync(id);
-        if (model is null) return NotFound("Application to delete not found.");
+        if (model is null)
+            return NotFound("Application to delete not found.");
 
         var deleted = await repository.DeleteAsync(id);
         return deleted ? NoContent() : BadRequest("Unable to delete Application.");

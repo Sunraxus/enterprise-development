@@ -24,7 +24,7 @@ public class Application
     /// Навигационное свойство на контрагента — заявителя (покупателя или продавца).
     /// Позволяет получать ФИО и контакты без дополнительных запросов.
     /// </summary>
-    public required Counterparty Counterparty { get; set; }
+    public Counterparty? Counterparty { get; set; }
 
     /// <summary>
     /// Внешний ключ на объект недвижимости, к которому относится заявка.
@@ -36,7 +36,7 @@ public class Application
     /// Навигационное свойство на объект недвижимости, фигурирующий в заявке.
     /// Содержит тип, назначение и физические характеристики объекта.
     /// </summary>
-    public required RealEstate RealEstate { get; set; }
+    public RealEstate? RealEstate { get; set; }
 
     /// <summary>
     /// Тип заявки: покупка или продажа, определяет логику фильтрации и агрегаций.

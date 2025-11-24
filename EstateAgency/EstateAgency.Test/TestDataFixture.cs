@@ -242,168 +242,138 @@ public class TestDataFixture
     [
         new() 
         {
-            Id = 1,  
-            CounterpartyId = 1,  
-            Counterparty = Counterparties[0],  
-            RealEstateId = 1,  
-            RealEstate = EstateObjects[0],  
+            Id = 1,
+            CounterpartyId = Counterparties[0].Id,
+            RealEstateId = EstateObjects[0].Id,
             Type = ApplicationType.Sale,     
             Amount = 4_500_000m,  
             Date = new DateOnly(2025, 1, 15) 
         },
         new() 
         {
-            Id = 2,  
-            CounterpartyId = 2,  
-            Counterparty = Counterparties[1],  
-            RealEstateId = 2, 
-            RealEstate = EstateObjects[1],  
+            Id = 2,
+            CounterpartyId = Counterparties[1].Id,
+            RealEstateId = EstateObjects[1].Id,
             Type = ApplicationType.Sale,     
             Amount = 6_800_000m,  
             Date = new DateOnly(2025, 2, 10) 
         },
         new() 
         {
-            Id = 3,  
-            CounterpartyId = 3,  
-            Counterparty = Counterparties[2],  
-            RealEstateId = 3,  
-            RealEstate = EstateObjects[2],  
+            Id = 3,
+            CounterpartyId = Counterparties[2].Id,
+            RealEstateId = EstateObjects[2].Id,
             Type = ApplicationType.Purchase, 
             Amount = 9_500_000m,  
             Date = new DateOnly(2025, 2, 25) 
         },
         new() 
         {
-            Id = 4,  
-            CounterpartyId = 4,  
-            Counterparty = Counterparties[3],  
-            RealEstateId = 4, 
-            RealEstate = EstateObjects[3],  
+            Id = 4,
+            CounterpartyId = Counterparties[3].Id,
+            RealEstateId = EstateObjects[3].Id,
             Type = ApplicationType.Purchase, 
             Amount = 15_000_000m, 
             Date = new DateOnly(2025, 3, 5)  
         },
         new() 
         { 
-            Id = 5,  
-            CounterpartyId = 5,  
-            Counterparty = Counterparties[4],  
-            RealEstateId = 5,  
-            RealEstate = EstateObjects[4],  
+            Id = 5,
+            CounterpartyId = Counterparties[4].Id,
+            RealEstateId = EstateObjects[4].Id,
             Type = ApplicationType.Sale,     
             Amount = 12_300_000m, 
             Date = new DateOnly(2025, 3, 28) 
         },
         new() 
         {
-            Id = 6,  
-            CounterpartyId = 6,  
-            Counterparty = Counterparties[5],  
-            RealEstateId = 6,  
-            RealEstate = EstateObjects[5],  
+            Id = 6,
+            CounterpartyId = Counterparties[5].Id,
+            RealEstateId = EstateObjects[5].Id,
             Type = ApplicationType.Sale,     
             Amount = 25_000_000m, 
             Date = new DateOnly(2025, 4, 12) 
         },
         new() 
         { 
-            Id = 7,  
-            CounterpartyId = 7,
-            Counterparty = Counterparties[6],  
-            RealEstateId = 7,  
-            RealEstate = EstateObjects[6],  
+            Id = 7,
+            CounterpartyId = Counterparties[6].Id,
+            RealEstateId = EstateObjects[6].Id,
             Type = ApplicationType.Purchase, 
             Amount = 3_800_000m,  
             Date = new DateOnly(2025, 4, 20) 
         },
         new() 
         { 
-            Id = 8,  
-            CounterpartyId = 8,  
-            Counterparty = Counterparties[7],  
-            RealEstateId = 8,  
-            RealEstate = EstateObjects[7],  
+            Id = 8,
+            CounterpartyId = Counterparties[7].Id,
+            RealEstateId = EstateObjects[7].Id,
             Type = ApplicationType.Purchase, 
             Amount = 18_700_000m, 
             Date = new DateOnly(2025, 5, 3)  
         },
         new() 
         { 
-            Id = 9,  
-            CounterpartyId = 9,  
-            Counterparty = Counterparties[8],  
-            RealEstateId = 9,  
-            RealEstate = EstateObjects[8],  
+            Id = 9,
+            CounterpartyId = Counterparties[8].Id,
+            RealEstateId = EstateObjects[8].Id,
             Type = ApplicationType.Sale,     
             Amount = 10_900_000m, 
             Date = new DateOnly(2025, 5, 18) 
         },
         new() 
         { 
-            Id = 10, 
-            CounterpartyId = 10, 
-            Counterparty = Counterparties[9],  
-            RealEstateId = 10, 
-            RealEstate = EstateObjects[9],  
+            Id = 10,
+            CounterpartyId = Counterparties[9].Id,
+            RealEstateId = EstateObjects[9].Id,
             Type = ApplicationType.Purchase, 
             Amount = 7_200_000m,  
             Date = new DateOnly(2025, 6, 1)  
         },
-        new() 
+        new()
         { 
-            Id = 11, 
-            CounterpartyId = 1,  
-            Counterparty = Counterparties[0],  
-            RealEstateId = 7,  
-            RealEstate = EstateObjects[6],  
-            Type = ApplicationType.Purchase, 
-            Amount = 4_000_000m,  
-            Date = new DateOnly(2025, 6, 15) 
+            Id = 11,
+            CounterpartyId = Counterparties[0].Id,
+            RealEstateId = EstateObjects[6].Id,
+            Type = ApplicationType.Purchase,
+            Amount = 4_000_000m,
+            Date = new DateOnly(2025, 6, 15)
         },
-        new() 
-        { 
-            Id = 12, 
-            CounterpartyId = 2,  
-            Counterparty = Counterparties[1],  
-            RealEstateId = 1,  
-            RealEstate = EstateObjects[0],  
-            Type = ApplicationType.Purchase, 
-            Amount = 4_600_000m,  
-            Date = new DateOnly(2025, 6, 20) 
+        new()
+        {
+            Id = 12,
+            CounterpartyId = Counterparties[1].Id,
+            RealEstateId = EstateObjects[0].Id,
+            Type = ApplicationType.Purchase,
+            Amount = 4_600_000m,
+            Date = new DateOnly(2025, 6, 20)
         },
-        new() 
-        { 
-            Id = 13, 
-            CounterpartyId = 3,  
-            Counterparty = Counterparties[2],  
-            RealEstateId = 5,  
-            RealEstate = EstateObjects[4],  
-            Type = ApplicationType.Sale,     
-            Amount = 12_100_000m, 
-            Date = new DateOnly(2025, 7, 7)  
+        new()
+        {
+            Id = 13,
+            CounterpartyId = Counterparties[2].Id,
+            RealEstateId = EstateObjects[4].Id,
+            Type = ApplicationType.Sale,
+            Amount = 12_100_000m,
+            Date = new DateOnly(2025, 7, 7)
         },
-        new() 
-        { 
-            Id = 14, 
-            CounterpartyId = 4,  
-            Counterparty = Counterparties[3],  
-            RealEstateId = 2,  
-            RealEstate = EstateObjects[1],  
-            Type = ApplicationType.Sale,     
-            Amount = 6_600_000m,  
-            Date = new DateOnly(2025, 7, 22) 
+        new()
+        {
+            Id = 14,
+            CounterpartyId = Counterparties[3].Id,
+            RealEstateId = EstateObjects[1].Id,
+            Type = ApplicationType.Sale,
+            Amount = 6_600_000m,
+            Date = new DateOnly(2025, 7, 22)
         },
-        new() 
-        { 
-            Id = 15, 
-            CounterpartyId = 5,  
-            Counterparty = Counterparties[4],  
-            RealEstateId = 9,  
-            RealEstate = EstateObjects[8],  
-            Type = ApplicationType.Purchase, 
-            Amount = 10_700_000m, 
-            Date = new DateOnly(2025, 8, 9)  
+        new()
+        {
+            Id = 15,
+            CounterpartyId = Counterparties[4].Id,
+            RealEstateId = EstateObjects[8].Id,
+            Type = ApplicationType.Purchase,
+            Amount = 10_700_000m,
+            Date = new DateOnly(2025, 8, 9)
         }
     ];
 }
