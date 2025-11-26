@@ -1,17 +1,17 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для информации о контрагентах с заявками на минимальную сумму.
+/// Dto для информации о контрагентах с заявками на минимальную сумму.
 /// </summary>
 public class ClientsWithMinAmountDto
 {
     /// <summary>
     /// Минимальная сумма заявки.
     /// </summary>
-    public decimal MinAmount { get; set; }
+    public required decimal MinAmount { get; set; }
 
     /// <summary>
-    /// Коллекция ФИО контрагентов с минимальной суммой заявки.
+    /// Список контрагентов с заявками на минимальную сумму.
     /// </summary>
-    public List<string> FullNames { get; set; } = new();
+    public required List<CounterpartyReadDto> Counterparties { get; set; }
 }

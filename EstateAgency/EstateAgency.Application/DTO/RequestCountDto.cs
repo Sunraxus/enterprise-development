@@ -1,22 +1,17 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для информации о количестве заявок по контрагенту.
+/// Dto для статистики по контрагенту с полной информацией.
 /// </summary>
 public class RequestCountDto
 {
     /// <summary>
-    /// Идентификатор контрагента.
+    /// Полная информация о контрагенте.
     /// </summary>
-    public int Id { get; set; }
+    public required CounterpartyReadDto Counterparty { get; set; }
 
     /// <summary>
-    /// ФИО контрагента.
+    /// Количество заявок контрагента.
     /// </summary>
-    public required string FullName { get; set; }
-
-    /// <summary>
-    /// Количество заявок.
-    /// </summary>
-    public int Count { get; set; }
+    public required int Count { get; set; }
 }

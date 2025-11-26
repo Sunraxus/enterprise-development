@@ -1,4 +1,4 @@
-﻿using EstateAgency.Application.DTO;
+﻿using EstateAgency.Application.Dto;
 using EstateAgency.Domain.Entities;
 using EstateAgency.Domain.Interface;
 using AutoMapper;
@@ -43,7 +43,7 @@ public class CounterpartyController(IRepository<Counterparty> repository, IMappe
     /// Создаёт нового контрагента.
     /// </summary>
     /// <param name="dto">Модель для создания контрагента</param>
-    /// <returns>HTTP 201 с DTO нового контрагента</returns>
+    /// <returns>HTTP 201 с Dto нового контрагента</returns>
     [HttpPost]
     public async Task<ActionResult<CounterpartyReadDto>> Create([FromBody] CounterpartyCreateDto dto)
     {
@@ -81,15 +81,10 @@ public class CounterpartyController(IRepository<Counterparty> repository, IMappe
     /// <summary>
     /// Удаляет контрагента по идентификатору.
     /// </summary>
-    /// <param name="id">Идентификатор</param>
-    /// <returns>HTTP 204, если успешно, или код ошибки</returns>
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var model = await repository.GetByIdAsync(id);
-        if (model is null) return NotFound("Counterparty to delete not found.");
-
-        var deleted = await repository.DeleteAsync(id);
-        return deleted ? NoContent() : BadRequest("Unable to delete Counterparty.");
+        await repository.DeleteAsync(id);
+        return NoContent();
     }
 }

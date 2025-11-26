@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EstateAgency.Application.DTO;
+using EstateAgency.Application.Dto;
 using EstateAgency.Domain.Entities;
 using EstateAgency.Domain.Enums;
 using EstateAgency.Domain.Interface;
@@ -14,7 +14,7 @@ namespace EstateAgency.Api.Controllers;
 [ApiController]
 [Route("api/applications")]
 public class ApplicationController(
-    IRepository<EstateAgency.Domain.Entities.Application> repository,
+    IRepository<Domain.Entities.Application> repository,
     IRepository<RealEstate> realEstateRepository,
     IRepository<Counterparty> counterpartyRepository,
     IMapper mapper
@@ -62,8 +62,8 @@ public class ApplicationController(
         if (!Enum.TryParse<ApplicationType>(dto.Type, true, out var typeEnum))
             return BadRequest("Invalid Application type.");
 
-        // Маппинг DTO → Entity и привязка навигационных свойств вручную (FK + объект)
-        var model = mapper.Map<EstateAgency.Domain.Entities.Application>(dto);
+        // Маппинг Dto → Entity и привязка навигационных свойств вручную (FK + объект)
+        var model = mapper.Map<Domain.Entities.Application>(dto);
         model.Type = typeEnum;
         model.RealEstate = realEstate;
         model.Counterparty = counterparty;
@@ -116,11 +116,7 @@ public class ApplicationController(
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var model = await repository.GetByIdAsync(id);
-        if (model is null)
-            return NotFound("Application to delete not found.");
-
-        var deleted = await repository.DeleteAsync(id);
-        return deleted ? NoContent() : BadRequest("Unable to delete Application.");
+        await repository.DeleteAsync(id);
+        return NoContent();
     }
 }

@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
-using EstateAgency.Application.DTO;
+using EstateAgency.Application.Dto;
 using EstateAgency.Domain.Entities;
 
 namespace EstateAgency.Application.Mapper;
 
 /// <summary>
 /// Профиль сопоставления для AutoMapper в проекте агентства недвижимости.
-/// Описывает правила преобразования между сущностями домена и DTO,
+/// Описывает правила преобразования между сущностями домена и Dto,
 /// обеспечивая быстрый и безопасный маппинг объектов в приложении.
 /// </summary>
 public class AppMapper : Profile
 {
     /// <summary>
     /// Конструктор класса AppMapper.
-    /// Инициализирует все сопоставления между DTO и доменными сущностями 
+    /// Инициализирует все сопоставления между Dto и доменными сущностями 
     /// для контрагентов, недвижимости и заявок, включая двусторонний маппинг.
     /// </summary>
     public AppMapper()
@@ -24,7 +24,7 @@ public class AppMapper : Profile
         CreateMap<RealEstate, RealEstateReadDto>().ReverseMap();
         CreateMap<RealEstateCreateDto, RealEstate>().ReverseMap();
 
-        CreateMap<EstateAgency.Domain.Entities.Application, ApplicationReadDto>().ReverseMap();
-        CreateMap<ApplicationCreateDto, EstateAgency.Domain.Entities.Application>().ReverseMap();
+        CreateMap<Domain.Entities.Application, ApplicationReadDto>().ReverseMap();
+        CreateMap<ApplicationCreateDto, Domain.Entities.Application>().ReverseMap();
     }
 }

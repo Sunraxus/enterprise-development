@@ -1,7 +1,7 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для создания нового объекта недвижимости.
+/// Dto для создания нового объекта недвижимости.
 /// Применяется для передачи данных на добавление.
 /// </summary>
 public class RealEstateCreateDto
@@ -54,5 +54,5 @@ public class RealEstateCreateDto
     /// <summary>
     /// Наличие обременений по объекту.
     /// </summary>
-    public bool HasEncumbrances { get; set; }
+    public required bool HasEncumbrances { get; set; }
 }

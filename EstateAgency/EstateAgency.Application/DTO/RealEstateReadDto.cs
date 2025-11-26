@@ -1,7 +1,7 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для чтения информации об объекте недвижимости.
+/// Dto для чтения информации об объекте недвижимости.
 /// Используется для передачи полной информации по объекту.
 /// </summary>
 public class RealEstateReadDto
@@ -9,7 +9,7 @@ public class RealEstateReadDto
     /// <summary>
     /// Уникальный идентификатор объекта недвижимости.
     /// </summary>
-    public int Id { get; set; }
+    public required int Id { get; set; }
 
     /// <summary>
     /// Тип недвижимости.
@@ -59,5 +59,5 @@ public class RealEstateReadDto
     /// <summary>
     /// Признак наличия обременений.
     /// </summary>
-    public bool HasEncumbrances { get; set; }
+    public required bool HasEncumbrances { get; set; }
 }

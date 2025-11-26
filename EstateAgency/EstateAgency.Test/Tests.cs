@@ -1,4 +1,5 @@
-﻿using EstateAgency.Domain.Enums;
+﻿using EstateAgency.Domain.Data;
+using EstateAgency.Domain.Enums;
 
 namespace EstateAgency.Test;
 
@@ -6,7 +7,7 @@ namespace EstateAgency.Test;
 /// Набор юнит‑тестов для LINQ‑запросов по данным агентства недвижимости.
 /// Использует TestDataFixture как общий источник инмемори данных через primary constructor.
 /// </summary>
-public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixture>
+public class DomainTests(DataSeeder seeder) : IClassFixture<DataSeeder>
 {
     /// <summary>
     /// Возвращает всех продавцов, оставивших заявки на продажу в заданном периоде,
@@ -26,9 +27,9 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             "Соколов Дмитрий Андреевич"
         };
 
-        var sellers = fixture.Requests
+        var sellers = seeder.Requests
             .Where(a => a.Type == ApplicationType.Sale && a.Date >= from && a.Date <= to)
-            .Join(fixture.Counterparties,
+            .Join(seeder.Counterparties,
                 a => a.CounterpartyId,
                 c => c.Id,
                 (a, c) => c.FullName)
@@ -64,9 +65,9 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             new { FullName = "Попова Елена Викторовна", Count = 1 }
         };
 
-        var purchaseTop = fixture.Requests
+        var purchaseTop = seeder.Requests
             .Where(a => a.Type == ApplicationType.Purchase)
-            .Join(fixture.Counterparties,
+            .Join(seeder.Counterparties,
                 a => a.CounterpartyId,
                 c => c.Id,
                 (a, c) => c.FullName)
@@ -77,9 +78,9 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             .Take(5)
             .ToList();
 
-        var saleTop = fixture.Requests
+        var saleTop = seeder.Requests
             .Where(a => a.Type == ApplicationType.Sale)
-            .Join(fixture.Counterparties,
+            .Join(seeder.Counterparties,
                 a => a.CounterpartyId,
                 c => c.Id,
                 (a, c) => c.FullName)
@@ -110,8 +111,8 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             new { Type = TypeRealEstate.Warehouse,  Count = 1 }
         };
 
-        var counts = fixture.Requests
-            .Join(fixture.EstateObjects,
+        var counts = seeder.Requests
+            .Join(seeder.EstateObjects,
                 a => a.RealEstateId,
                 e => e.Id,
                 (a, e) => e.Type)
@@ -135,11 +136,11 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
             "Лебедева Мария Алексеевна"
         };
 
-        var minAmount = fixture.Requests.Min(a => a.Amount);
+        var minAmount = seeder.Requests.Min(a => a.Amount);
 
-        var customers = fixture.Requests
+        var customers = seeder.Requests
             .Where(a => a.Amount == minAmount)
-            .Join(fixture.Counterparties,
+            .Join(seeder.Counterparties,
                 a => a.CounterpartyId,
                 c => c.Id,
                 (a, c) => c.FullName)
@@ -166,14 +167,14 @@ public class DomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixtur
 
         const TypeRealEstate targetType = TypeRealEstate.Apartment;
 
-        var customers = fixture.Requests
+        var customers = seeder.Requests
             .Where(a => a.Type == ApplicationType.Purchase)
-            .Join(fixture.EstateObjects,
+            .Join(seeder.EstateObjects,
                 a => a.RealEstateId,
                 e => e.Id,
                 (a, e) => new { a.CounterpartyId, e.Type })
             .Where(x => x.Type == targetType)
-            .Join(fixture.Counterparties,
+            .Join(seeder.Counterparties,
                 x => x.CounterpartyId,
                 c => c.Id,
                 (x, c) => c.FullName)

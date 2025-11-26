@@ -1,7 +1,7 @@
-﻿    namespace EstateAgency.Application.DTO;
+﻿    namespace EstateAgency.Application.Dto;
 
     /// <summary>
-    /// DTO для отображения информации о контрагенте.
+    /// Dto для отображения информации о контрагенте.
     /// Используется для передачи данных при запросах в API.
     /// </summary>
     public class CounterpartyReadDto
@@ -9,7 +9,7 @@
         /// <summary>
         /// Уникальный идентификатор контрагента.
         /// </summary>
-        public int Id { get; set; }
+        public required int Id { get; set; }
 
         /// <summary>
         /// ФИО контрагента.

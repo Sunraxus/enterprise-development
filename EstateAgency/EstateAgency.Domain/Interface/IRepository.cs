@@ -12,6 +12,12 @@ public interface IRepository<T> where T : class
     public Task<IEnumerable<T>> GetAllAsync();
 
     /// <summary>
+    /// Получение всех сущностей с включением связанных навигационных свойств.
+    /// </summary>
+    /// <param name="includes">Массив выражений для включения связанных данных</param>
+    public Task<IEnumerable<T>> GetAllWithIncludesAsync(params string[] includes);
+
+    /// <summary>
     /// Получение сущности по идентификатору.
     /// </summary>
     public Task<T?> GetByIdAsync(int id);

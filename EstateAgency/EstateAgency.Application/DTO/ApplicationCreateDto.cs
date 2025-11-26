@@ -1,7 +1,7 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для создания новой заявки.
+/// Dto для создания новой заявки.
 /// Используется при отправке данных на добавление через API.
 /// </summary>
 public class ApplicationCreateDto

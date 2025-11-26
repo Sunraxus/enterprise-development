@@ -4,11 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EstateAgency.Domain\EstateAgency.Domain.csproj" />
-    <ProjectReference Include="..\EstateAgency.Test\EstateAgency.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>

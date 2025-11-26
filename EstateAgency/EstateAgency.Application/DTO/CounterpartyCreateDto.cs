@@ -1,7 +1,7 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для создания нового контрагента.
+/// Dto для создания нового контрагента.
 /// Используется при регистрации нового клиента.
 /// </summary>
 public class CounterpartyCreateDto

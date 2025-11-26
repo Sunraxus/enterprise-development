@@ -14,13 +14,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AppMapper>());
 
-builder.Services.AddScoped<IRepository<Counterparty>>(provider =>
-    new Repository<Counterparty>(provider.GetRequiredService<AppDbContext>()));
-builder.Services.AddScoped<IRepository<RealEstate>>(provider =>
-    new Repository<RealEstate>(provider.GetRequiredService<AppDbContext>()));
-builder.Services.AddScoped<IRepository<Application>>(provider =>
-    new Repository<Application>(provider.GetRequiredService<AppDbContext>()));
- 
+builder.Services.AddScoped<IRepository<Counterparty>, Repository<Counterparty>>();
+builder.Services.AddScoped<IRepository<RealEstate>, Repository<RealEstate>>();
+builder.Services.AddScoped<IRepository<Application>, Repository<Application>>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -29,6 +26,7 @@ builder.Services.AddSwaggerGen(c =>
     foreach (var xmlFile in xmlFiles)
         c.IncludeXmlComments(xmlFile);
 });
+
 
 var app = builder.Build();
 

@@ -1,7 +1,7 @@
-﻿namespace EstateAgency.Application.DTO;
+﻿namespace EstateAgency.Application.Dto;
 
 /// <summary>
-/// DTO для информации о количестве заявок по типу недвижимости.
+/// Dto для информации о количестве заявок по типу недвижимости.
 /// </summary>
 public class RealEstateTypeRequestCountDto
 {
@@ -13,5 +13,5 @@ public class RealEstateTypeRequestCountDto
     /// <summary>
     /// Количество заявок.
     /// </summary>
-    public int Count { get; set; }
+    public required int Count { get; set; }
 }

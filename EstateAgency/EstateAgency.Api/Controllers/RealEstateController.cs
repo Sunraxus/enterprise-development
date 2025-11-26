@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EstateAgency.Application.DTO;
+using EstateAgency.Application.Dto;
 using EstateAgency.Domain.Entities;
 using EstateAgency.Domain.Enums;
 using EstateAgency.Domain.Interface;
@@ -18,7 +18,7 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// <summary>
     /// Возвращает полный список объектов недвижимости.
     /// </summary>
-    /// <returns>HTTP 200 с коллекцией DTO недвижимости</returns>
+    /// <returns>HTTP 200 с коллекцией Dto недвижимости</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RealEstateReadDto>>> GetAll()
     {
@@ -31,7 +31,7 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// Возвращает объект недвижимости по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор объекта</param>
-    /// <returns>HTTP 200 с DTO или 404 при отсутствии</returns>
+    /// <returns>HTTP 200 с Dto или 404 при отсутствии</returns>
     [HttpGet("{id:int}")]
     public async Task<ActionResult<RealEstateReadDto>> GetById(int id)
     {
@@ -98,15 +98,10 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// <summary>
     /// Удаляет объект недвижимости.
     /// </summary>
-    /// <param name="id">Идентификатор объекта</param>
-    /// <returns>HTTP 204 или ошибка</returns>
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var model = await repository.GetByIdAsync(id);
-        if (model is null) return NotFound("RealEstate to delete not found.");
-
-        var deleted = await repository.DeleteAsync(id);
-        return deleted ? NoContent() : BadRequest("Unable to delete RealEstate.");
+        await repository.DeleteAsync(id);
+        return NoContent();
     }
 }

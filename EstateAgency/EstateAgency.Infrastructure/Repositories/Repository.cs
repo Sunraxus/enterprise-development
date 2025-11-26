@@ -23,6 +23,23 @@ public class Repository<T>(AppDbContext context) : IRepository<T> where T : clas
     }
 
     /// <summary>
+    /// Получение всех сущностей с включением связанных навигационных свойств.
+    /// </summary>
+    /// <param name="includes">Массив имён навигационных свойств для включения</param>
+    /// <returns>Коллекция сущностей с загруженными связями</returns>
+    public async Task<IEnumerable<T>> GetAllWithIncludesAsync(params string[] includes)
+    {
+        IQueryable<T> query = _dbSet;
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return await query.ToListAsync();
+    }
+
+    /// <summary>
     /// Получение сущности по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор сущности</param>

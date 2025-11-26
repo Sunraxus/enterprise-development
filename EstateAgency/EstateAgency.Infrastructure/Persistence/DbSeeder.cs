@@ -1,4 +1,4 @@
-﻿using EstateAgency.Test;
+﻿using EstateAgency.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace EstateAgency.Infrastructure.Persistence;
@@ -13,7 +13,7 @@ public static class DbSeeder
     /// </summary>
     public static async Task SeedAsync(AppDbContext context)
     {
-        var fixture = new TestDataFixture();
+        var fixture = new DataSeeder();
 
         if (!await context.RealEstates.AnyAsync())
         {
