@@ -18,6 +18,8 @@ builder.Services.AddScoped<IRepository<Counterparty>, Repository<Counterparty>>(
 builder.Services.AddScoped<IRepository<RealEstate>, Repository<RealEstate>>();
 builder.Services.AddScoped<IRepository<Application>, Repository<Application>>();
 
+builder.Services.AddGrpc();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -47,6 +49,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+app.MapGrpcService<EstateAgency.Api.Grpc.ApplicationReceiverService>();
+app.MapGet("/", () => "gRPC service running");
 app.MapControllers();
 
 app.Run();
