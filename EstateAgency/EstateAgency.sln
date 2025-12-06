@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.AppHost", "Est
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.ServiceDefaults", "EstateAgency.ServiceDefaults\EstateAgency.ServiceDefaults.csproj", "{537E4AFC-C12D-862A-4887-FDA46A35C012}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.Grpc.Client", "EstateAgency.Grpc.Client\EstateAgency.Grpc.Client.csproj", "{5DC4C3E5-3B7C-9904-E22F-C2C5968CE49B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateAgency.Grpc.Protos", "EstateAgency.Grpc.Protos\EstateAgency.Grpc.Protos.csproj", "{00DCAB74-4BF2-4C0E-8979-6ECC848F50DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{537E4AFC-C12D-862A-4887-FDA46A35C012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{537E4AFC-C12D-862A-4887-FDA46A35C012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{537E4AFC-C12D-862A-4887-FDA46A35C012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC4C3E5-3B7C-9904-E22F-C2C5968CE49B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DC4C3E5-3B7C-9904-E22F-C2C5968CE49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DC4C3E5-3B7C-9904-E22F-C2C5968CE49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DC4C3E5-3B7C-9904-E22F-C2C5968CE49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00DCAB74-4BF2-4C0E-8979-6ECC848F50DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00DCAB74-4BF2-4C0E-8979-6ECC848F50DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00DCAB74-4BF2-4C0E-8979-6ECC848F50DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00DCAB74-4BF2-4C0E-8979-6ECC848F50DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EstateAgency.Api\EstateAgency.Api.csproj" />
+    <ProjectReference Include="..\EstateAgency.Grpc.Client\EstateAgency.Grpc.Client.csproj" />
   </ItemGroup>
 
 </Project>

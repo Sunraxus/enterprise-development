@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "EstateAgency.Grpc.Protos";
+
+message ApplicationContract {
+    int32 counterpartyId = 1;
+    int32 realEstateId = 2;
+    string type = 3;
+    string amount = 4;
+    string date = 5;
+}
+
+message ApplicationsStreamResponse {
+    int32 received = 1;
+    int32 saved = 2;
+    int32 failed = 3;
+    string message = 4;
+}
+ 
+service ApplicationReceiver {
+    rpc StreamApplications (stream ApplicationContract) returns (ApplicationsStreamResponse);
+}
