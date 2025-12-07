@@ -3,7 +3,10 @@ using EstateAgency.Grpc.Client;
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddSingleton<ApplicationContractGenerator>();
+
 builder.Services.AddHostedService<Worker>();
 
-var host = builder.Build();
-host.Run();
+var app = builder.Build();
+app.Run();
