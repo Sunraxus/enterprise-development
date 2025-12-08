@@ -51,7 +51,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapGrpcService<EstateAgency.Api.Grpc.ApplicationReceiverService>();
-app.MapGet("/", () => "gRPC service running");
 app.MapControllers();
 
 app.Run();
