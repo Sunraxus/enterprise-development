@@ -85,40 +85,40 @@ public class ApplicationReceiverService(
     /// <summary>
     /// Обрабатывает один контракт: валидирует, парсит и сохраняет в БД.
     /// </summary>
-    private async Task<(bool Success, string? Error)> ProcessContractAsync(ApplicationContract contract)
+    private async Task<ContractProcessResult> ProcessContractAsync(ApplicationContract contract)
     {
         try
         {
             if (contract.CounterpartyId <= 0 || contract.RealEstateId <= 0)
             {
-                return (false, "CounterpartyId and RealEstateId must be positive");
+                return ContractProcessResult.Fail("CounterpartyId and RealEstateId must be positive");
             }
 
             var counterparty = await counterpartyRepository.GetByIdAsync(contract.CounterpartyId);
             if (counterparty == null)
             {
-                return (false, $"Counterparty with ID {contract.CounterpartyId} not found");
+                return ContractProcessResult.Fail($"Counterparty with ID {contract.CounterpartyId} not found");
             }
 
             var realEstate = await realEstateRepository.GetByIdAsync(contract.RealEstateId);
             if (realEstate == null)
             {
-                return (false, $"RealEstate with ID {contract.RealEstateId} not found");
+                return ContractProcessResult.Fail($"RealEstate with ID {contract.RealEstateId} not found");
             }
 
             if (!Enum.TryParse<ApplicationType>(contract.Type, ignoreCase: true, out var applicationType))
             {
-                return (false, $"Invalid ApplicationType: {contract.Type}. Expected 'Purchase' or 'Sale'");
+                return ContractProcessResult.Fail($"Invalid ApplicationType: {contract.Type}. Expected 'Purchase' or 'Sale'");
             }
 
             if (!decimal.TryParse(contract.Amount, out var amount) || amount <= 0)
             {
-                return (false, $"Invalid Amount: {contract.Amount}. Must be positive decimal");
+                return ContractProcessResult.Fail($"Invalid Amount: {contract.Amount}. Must be positive decimal");
             }
 
             if (!DateOnly.TryParseExact(contract.Date, "yyyy-MM-dd", out var date))
             {
-                return (false, $"Invalid Date: {contract.Date}. Expected format: yyyy-MM-dd");
+                return ContractProcessResult.Fail($"Invalid Date: {contract.Date}. Expected format: yyyy-MM-dd");
             }
 
             var application = new Domain.Entities.Application
@@ -135,12 +135,12 @@ public class ApplicationReceiverService(
 
             await applicationRepository.AddAsync(application);
 
-            return (true, null);
+            return ContractProcessResult.Ok();
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error processing contract");
-            return (false, $"Internal error: {ex.Message}");
+            return ContractProcessResult.Fail($"Internal error: {ex.Message}");
         }
     }
 }

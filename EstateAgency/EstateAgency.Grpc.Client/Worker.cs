@@ -1,6 +1,7 @@
 ﻿using EstateAgency.Grpc.Protos;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Microsoft.Extensions.Options;
 
 namespace EstateAgency.Grpc.Client;
 
@@ -10,21 +11,14 @@ namespace EstateAgency.Grpc.Client;
 /// получает один итоговый ответ от сервера и повторяет процесс после задержки.
 /// </summary>
 /// <param name="logger">Логгер для структурированного логирования операций Worker.</param>
-/// <param name="configuration">Конфигурация приложения для получения настроек подключения.</param>
+/// <param name="options">Параметры конфигурации Worker сервиса.</param>
 /// <param name="generator">Генератор случайных контрактов заявок.</param>
 public class Worker(
     ILogger<Worker> logger,
-    IConfiguration configuration,
+    IOptions<WorkerOptions> options,
     ApplicationContractGenerator generator) : BackgroundService
 {
-    private readonly TimeSpan _batchInterval = TimeSpan.FromSeconds(
-        configuration.GetValue<int>("Worker:BatchIntervalSeconds", 30));
-
-    private readonly int _batchSize = configuration.GetValue<int>("Worker:BatchSize", 50);
-    private readonly int _maxCounterpartyId = configuration.GetValue<int>("Worker:MaxCounterpartyId", 10);
-    private readonly int _maxRealEstateId = configuration.GetValue<int>("Worker:MaxRealEstateId", 10);
-    private readonly string _serverAddress = configuration["Worker:ServerAddress"]
-        ?? throw new InvalidOperationException("Worker:ServerAddress is not configured.");
+    private readonly WorkerOptions _options = options.Value;
 
     /// <summary>
     /// Основной цикл выполнения Worker: генерирует и отправляет пакеты контрактов на сервер.
@@ -34,9 +28,8 @@ public class Worker(
     {
         logger.LogInformation(
             "Worker started. Server: {Server}, Batch size: {BatchSize}, Interval: {Interval}s",
-            _serverAddress, _batchSize, _batchInterval.TotalSeconds);
+            _options.ServerAddress, _options.BatchSize, _options.BatchIntervalSeconds);
 
-        // Задержка перед первым запросом (ждём запуска Api)
         await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
@@ -45,8 +38,10 @@ public class Worker(
             {
                 await SendContractBatchAsync(stoppingToken);
 
-                logger.LogInformation("Waiting {Interval} seconds before next batch...", _batchInterval.TotalSeconds);
-                await Task.Delay(_batchInterval, stoppingToken);
+                logger.LogInformation(
+                    "Waiting {Interval} seconds before next batch...",
+                    _options.BatchIntervalSeconds);
+                await Task.Delay(TimeSpan.FromSeconds(_options.BatchIntervalSeconds), stoppingToken);
             }
             catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable)
             {
@@ -69,13 +64,16 @@ public class Worker(
     /// </summary>
     private async Task SendContractBatchAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation("Generating {Count} contracts...", _batchSize);
+        logger.LogInformation("Generating {Count} contracts...", _options.BatchSize);
 
-        var contracts = generator.GenerateBulk(_batchSize, _maxCounterpartyId, _maxRealEstateId).ToList();
+        var contracts = generator.GenerateBulk(
+            _options.BatchSize,
+            _options.MaxCounterpartyId,
+            _options.MaxRealEstateId).ToList();
 
-        logger.LogInformation("Creating gRPC channel to server: {Server}", _serverAddress);
+        logger.LogInformation("Creating gRPC channel to server: {Server}", _options.ServerAddress);
 
-        using var channel = GrpcChannel.ForAddress(_serverAddress);
+        using var channel = GrpcChannel.ForAddress(_options.ServerAddress);
         var client = new ApplicationReceiver.ApplicationReceiverClient(channel);
 
         logger.LogInformation("Starting stream of {Count} contracts...", contracts.Count);
