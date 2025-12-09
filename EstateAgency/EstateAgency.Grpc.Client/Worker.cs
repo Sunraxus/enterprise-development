@@ -1,17 +1,17 @@
-using EstateAgency.Grpc.Protos;
+п»їusing EstateAgency.Grpc.Protos;
 using Grpc.Core;
 using Grpc.Net.Client;
 
 namespace EstateAgency.Grpc.Client;
 
 /// <summary>
-/// Фоновый сервис для генерации и потоковой отправки контрактов заявок на gRPC сервер.
-/// Работает в цикле: генерирует пакет контрактов, отправляет через Client Streaming,
-/// получает один итоговый ответ от сервера и повторяет процесс после задержки.
+/// Р¤РѕРЅРѕРІС‹Р№ СЃРµСЂРІРёСЃ РґР»СЏ РіРµРЅРµСЂР°С†РёРё Рё РїРѕС‚РѕРєРѕРІРѕР№ РѕС‚РїСЂР°РІРєРё РєРѕРЅС‚СЂР°РєС‚РѕРІ Р·Р°СЏРІРѕРє РЅР° gRPC СЃРµСЂРІРµСЂ.
+/// Р Р°Р±РѕС‚Р°РµС‚ РІ С†РёРєР»Рµ: РіРµРЅРµСЂРёСЂСѓРµС‚ РїР°РєРµС‚ РєРѕРЅС‚СЂР°РєС‚РѕРІ, РѕС‚РїСЂР°РІР»СЏРµС‚ С‡РµСЂРµР· Client Streaming,
+/// РїРѕР»СѓС‡Р°РµС‚ РѕРґРёРЅ РёС‚РѕРіРѕРІС‹Р№ РѕС‚РІРµС‚ РѕС‚ СЃРµСЂРІРµСЂР° Рё РїРѕРІС‚РѕСЂСЏРµС‚ РїСЂРѕС†РµСЃСЃ РїРѕСЃР»Рµ Р·Р°РґРµСЂР¶РєРё.
 /// </summary>
-/// <param name="logger">Логгер для структурированного логирования операций Worker.</param>
-/// <param name="configuration">Конфигурация приложения для получения настроек подключения.</param>
-/// <param name="generator">Генератор случайных контрактов заявок.</param>
+/// <param name="logger">Р›РѕРіРіРµСЂ РґР»СЏ СЃС‚СЂСѓРєС‚СѓСЂРёСЂРѕРІР°РЅРЅРѕРіРѕ Р»РѕРіРёСЂРѕРІР°РЅРёСЏ РѕРїРµСЂР°С†РёР№ Worker.</param>
+/// <param name="configuration">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РЅР°СЃС‚СЂРѕРµРє РїРѕРґРєР»СЋС‡РµРЅРёСЏ.</param>
+/// <param name="generator">Р“РµРЅРµСЂР°С‚РѕСЂ СЃР»СѓС‡Р°Р№РЅС‹С… РєРѕРЅС‚СЂР°РєС‚РѕРІ Р·Р°СЏРІРѕРє.</param>
 public class Worker(
     ILogger<Worker> logger,
     IConfiguration configuration,
@@ -27,16 +27,16 @@ public class Worker(
         ?? throw new InvalidOperationException("Worker:ServerAddress is not configured.");
 
     /// <summary>
-    /// Основной цикл выполнения Worker: генерирует и отправляет пакеты контрактов на сервер.
+    /// РћСЃРЅРѕРІРЅРѕР№ С†РёРєР» РІС‹РїРѕР»РЅРµРЅРёСЏ Worker: РіРµРЅРµСЂРёСЂСѓРµС‚ Рё РѕС‚РїСЂР°РІР»СЏРµС‚ РїР°РєРµС‚С‹ РєРѕРЅС‚СЂР°РєС‚РѕРІ РЅР° СЃРµСЂРІРµСЂ.
     /// </summary>
-    /// <param name="stoppingToken">Токен отмены для корректного завершения работы.</param>
+    /// <param name="stoppingToken">РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ Р·Р°РІРµСЂС€РµРЅРёСЏ СЂР°Р±РѕС‚С‹.</param>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation(
             "Worker started. Server: {Server}, Batch size: {BatchSize}, Interval: {Interval}s",
             _serverAddress, _batchSize, _batchInterval.TotalSeconds);
 
-        // Задержка перед первым запросом (ждём запуска Api)
+        // Р—Р°РґРµСЂР¶РєР° РїРµСЂРµРґ РїРµСЂРІС‹Рј Р·Р°РїСЂРѕСЃРѕРј (Р¶РґС‘Рј Р·Р°РїСѓСЃРєР° Api)
         await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
@@ -64,8 +64,8 @@ public class Worker(
     }
 
     /// <summary>
-    /// Генерирует пакет контрактов и отправляет их на сервер через Client Streaming.
-    /// Получает один итоговый ответ после завершения потока.
+    /// Р“РµРЅРµСЂРёСЂСѓРµС‚ РїР°РєРµС‚ РєРѕРЅС‚СЂР°РєС‚РѕРІ Рё РѕС‚РїСЂР°РІР»СЏРµС‚ РёС… РЅР° СЃРµСЂРІРµСЂ С‡РµСЂРµР· Client Streaming.
+    /// РџРѕР»СѓС‡Р°РµС‚ РѕРґРёРЅ РёС‚РѕРіРѕРІС‹Р№ РѕС‚РІРµС‚ РїРѕСЃР»Рµ Р·Р°РІРµСЂС€РµРЅРёСЏ РїРѕС‚РѕРєР°.
     /// </summary>
     private async Task SendContractBatchAsync(CancellationToken cancellationToken)
     {

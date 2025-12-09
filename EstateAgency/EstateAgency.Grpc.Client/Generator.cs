@@ -9,7 +9,7 @@ namespace EstateAgency.Grpc.Client;
 public class ApplicationContractGenerator
 {
     private readonly Faker _faker = new();
-    private static readonly string[] _validTypes = { "Purchase", "Sale" };
+    private static readonly string[] _validTypes = ["Purchase", "Sale"];
 
     /// <summary>
     /// Генерирует один случайный контракт заявки.
@@ -22,7 +22,7 @@ public class ApplicationContractGenerator
     {
         var type = _faker.PickRandom(_validTypes);
         var amount = _faker.Finance.Amount(500_000, 15_000_000, 2);
-        var date = _faker.Date.Between(DateTime.Now.AddYears(-1), DateTime.Now);
+        var date = _faker.Date.PastDateOnly(1);
 
         return new ApplicationContract
         {
@@ -30,7 +30,7 @@ public class ApplicationContractGenerator
             RealEstateId = _faker.Random.Int(1, maxRealEstateId),
             Type = type,
             Amount = amount.ToString("F2"),
-            Date = DateOnly.FromDateTime(date).ToString("yyyy-MM-dd")
+            Date = date.ToString("yyyy-MM-dd")
         };
     }
 
