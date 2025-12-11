@@ -135,7 +135,7 @@ public class ApplicationReceiverService(
 
             await applicationRepository.AddAsync(application);
 
-            return ContractProcessResult.Ok();
+            return ContractProcessResult.Ok;
         }
         catch (Exception ex)
         {
